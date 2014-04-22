@@ -2,7 +2,9 @@
     "name" : "Mishra",
     "description" : "Front-end project template",
     "author" : "Mike Gioia <mike@teachboost.com>",
-    "dependencies" : {},
+    "dependencies" : {
+        "uglifyify" : "*"
+    },
     "devDependencies" : {
         "watchify" : "*",
         "browserify" : "*",
