@@ -6,15 +6,17 @@
         "uglifyify" : "*"
     },
     "devDependencies" : {
+        "async" : "*",
         "watchify" : "*",
-        "browserify" : "*",
+        "browserify" : "4.x.x",
         "less" : "*",
         "browserify-shim" : "*",
         "gulp" : "*",
         "path" : "*",
         "gulp-less" : "*",
         "gulp-rename" : "*",
-        "gulp-exec" : "*"
+        "gulp-exec" : "*",
+        "mkdirp" : "*"
     },
     "browser" : {},
     "browserify": {

@@ -1,0 +1,29 @@
+module.exports = {
+
+    dependencies: function(vendorpath) {
+        return(
+            [
+                { 'require' : "jquery", expose: 'jquery' },
+                { 'require' : "bootstrap", expose: 'bootstrap' },
+                { 'require' : "underscore", expose: 'underscore' },
+                { 'require' : "superagent", expose: 'superagent' },
+                { 'require' : "pouchdb", expose: 'pouchdb' },
+                { 'require' : "page", expose: 'page' },
+                { 'require' : "stapes", expose: 'stapes' },
+                { 'require' : "ractify", expose: 'ractify' },
+                { 'require' : "ractive", expose: 'ractive' },
+                { 'require' : vendorpath + "/simpleStorage/simpleStorage.js", expose: "simpleStorage" },
+                { 'require' : vendorpath + "/ui-kit/dist/js/notify.min.js", expose: "notifyjs" },
+                { 'require' : vendorpath + "/ui-kit/dist/js/icheck.min.js", expose: "icheck" },
+                { 'require' : vendorpath + "/ui-kit/dist/js/mousewheel.min.js", expose: "mousewheel" },
+                { 'require' : vendorpath + "/ui-kit/dist/js/perfectScrollbar.min.js", expose: "perfectScrollbar" },
+                { 'require' : "mox-interface" },
+                { 'require' : "mox-router" },
+                { 'require' : "mox-request" },
+                { 'require' : "mox-notify" },
+                { 'require' : "mox-lockscreen" },
+                { 'require' : "mox-toolbelt" }
+            ]
+        );
+    }
+}
