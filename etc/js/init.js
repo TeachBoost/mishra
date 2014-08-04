@@ -8,27 +8,27 @@ var
     fs          = require('fs'),
     mkdirp      = require('mkdirp'),
     async       = require('async'),
-    currentpath = process.env.PWD,
+    currentPath = process.env.PWD,
     paths       = {
-        'rootpath'    : currentpath + "/../../",
-        'apppath'     : currentpath + "/../../TEST/app/",
-        'buildpath'   : currentpath + "/../../TEST/build/",
-        'configpath'  : currentpath + "/../config"
+        'rootPath'    : currentPath + "/../../",
+        'appPath'     : currentPath + "/../../TEST/app/",
+        'buildPath'   : currentPath + "/../../TEST/build/",
+        'configPath'  : currentPath + "/../config"
     };
     dirs = [
-        paths.apppath + 'base/images',
-        paths.apppath + 'base/lib',
-        paths.apppath + 'base/styles',
-        paths.apppath + 'base/views',
-        paths.apppath + 'modules',
-        paths.buildpath + 'public/css',
-        paths.buildpath + 'public/fonts',
-        paths.buildpath + 'public/img',
-        paths.buildpath + 'public/js',
+        paths.appPath + 'base/images',
+        paths.appPath + 'base/lib',
+        paths.appPath + 'base/styles',
+        paths.appPath + 'base/views',
+        paths.appPath + 'modules',
+        paths.buildPath + 'public/css',
+        paths.buildPath + 'public/fonts',
+        paths.buildPath + 'public/img',
+        paths.buildPath + 'public/js',
     ];
 
 // Check if config file exists
-if (!fs.existsSync(paths.configpath)) {
+if (!fs.existsSync(paths.configPath)) {
     return console.log("ERROR: Config file not found. Please run node configure.js <profile>");
 } else {
     // Make all the directories listed in dirs.
@@ -36,7 +36,9 @@ if (!fs.existsSync(paths.configpath)) {
     // until all the parent directories are created.
     async.map(dirs, mkdirp, function (err, results) {
         // Create style.less file
-        fs.open(paths.apppath + 'base/styles/index.less', 'w');
+        if (!fs.existsSync(paths.appPath + 'base/styles/index.less')) {
+            fs.open(paths.appPath + 'base/styles/index.less', 'w');
+        }
     });
 }
 

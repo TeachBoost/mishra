@@ -1,0 +1,101 @@
+{ 
+    "dependencies": [
+        { "require" : "jquery", "expose": "jquery" },
+        { "require" : "bootstrap", "expose": "bootstrap" },
+        { "require" : "underscore", "expose": "underscore" },
+        { "require" : "superagent", "expose": "superagent" },
+        { "require" : "pouchdb", "expose": "pouchdb" },
+        { "require" : "page", "expose": "page" },
+        { "require" : "stapes", "expose": "stapes" },
+        { "require" : "ractify", "expose": "ractify" },
+        { "require" : "ractive", "expose": "ractive" },
+        { "require" : "../../vendor/simpleStorage/simpleStorage.js", "expose": "simpleStorage" },
+        { "require" : "../../vendor/ui-kit/dist/js/notify.min.js", "expose": "notifyjs" },
+        { "require" : "../../vendor/ui-kit/dist/js/icheck.min.js", "expose": "icheck" },
+        { "require" : "../../vendor/ui-kit/dist/js/mousewheel.min.js", "expose": "mousewheel" },
+        { "require" : "../../vendor/ui-kit/dist/js/perfectScrollbar.min.js", "expose": "perfectScrollbar" },
+        { "require" : "mox-interface" },
+        { "require" : "mox-router" },
+        { "require" : "mox-request" },
+        { "require" : "mox-notify" },
+        { "require" : "mox-lockscreen" },
+        { "require" : "mox-toolbelt" }
+    ],
+    "paths" : {
+         "rootPath"    : "../../" ,
+         "basePath"    : "app/base" ,
+         "modulePath"  : "app/modules" ,
+         "buildPath"   : "build/public/" ,
+         "vendorPath"  : "vendor/" 
+     },
+     "settings" : {
+         
+         "historyBasePath" : {
+             "value" : "/project",
+             "description" : "stem used for history polyfill"
+         },
+
+         "apiPath" : {
+             "value" : "http://api.mishra.local",
+             "description" : "path for api calls"
+         },
+
+         "appPath" : {
+             "value" : "http://mishra.local",
+             "description" : "path for app redirection"
+         },
+
+         "basePath" : {
+             "value" : "http://mishra.local/project",
+             "description" : "base path"
+         },
+
+         "assetPath" : {
+             "value" : "http://mishra.local/project",
+             "description" : "path for assets"
+         },
+
+         "useHtaccess" : {
+             "value" : "no",
+             "description" : "using htaccess?"
+         },
+
+         "useAssetVersion" : {
+             "value" : "no",
+             "description" : "using asset versioning?"
+         },
+
+         "modules" : {
+             "value" : ["home"],
+             "description" : "array of modules"
+         },
+
+         "browserifyBase" : {
+             "value" : [],
+             "description" : "browserify command options"
+         },
+         "browserifyModule" : {
+             "value" : [],
+             "description" : "browserify command options"
+         },
+         "buildBaseJs" : {
+             "value" : [],
+             "description" : "assets to copy on build, vendor file  > build file "
+         },
+
+         "buildBaseCss" : {
+             "value" : [],
+             "description" : "this is an array of css files to prepend"
+         },
+
+         "buildBaseImg" : {
+             "value" : [],
+             "description" : "hash of image directory names and the vendor path, directories are relative to the vendor path"
+         },
+
+         "buildBaseFonts" : {
+             "value" : [],
+             "description" : "array of fonts to copy when building base, relative to the vendor path"
+         }
+     }
+}
