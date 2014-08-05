@@ -3,13 +3,13 @@
 // $ node index.js [module(s)]
 
 var 
-    // defaults    = require('../defaultsjs'),
-    // build       = require('./build'),
-    terminalMenu= require('terminal-menu'),
-    fs          = require('fs'),
-    mkdirp      = require('mkdirp'),
-    childProcess = require('child_process'),
-    modules     = [];
+    // defaults     = require('../defaultsjs'),
+    // build        = require('./build'),
+    terminal-menu   = require('terminal-menu'),
+    fs              = require('fs'),
+    mkdirp          = require('mkdirp'),
+    childProcess    = require('child_process'),
+    modules         = [];
 
 // If the user has entered options, read them into a nicer array
 // First two are always "node" and the filename that's being run
@@ -56,18 +56,18 @@ function setup(choice) {
             break;
         case 1:
             // Configure
-            runFile('configure');
+            runFile(__dirname + '/configure');
             break;
         case 2:
             // Init
-            runFile('init');
+            runFile(__dirname + '/init');
             break;
         case 3:
             // Routing
             break;
         case 4:
             // Build
-            runFile('build');
+            runFile(__dirname + '/build');
             break;
         case 5:
             // Watch

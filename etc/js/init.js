@@ -5,30 +5,32 @@
 // could pull the directory of the script itself, if the script is called
 // from a parent directory, e.g.
 var
-    fs          = require('fs'),
-    mkdirp      = require('mkdirp'),
-    async       = require('async'),
-    currentPath = process.env.PWD,
-    paths       = {
-        'rootPath'    : currentPath + "/../../",
-        'appPath'     : currentPath + "/../../TEST/app/",
-        'buildPath'   : currentPath + "/../../TEST/build/",
-        'configPath'  : currentPath + "/../config"
-    };
-    dirs = [
-        paths.appPath + 'base/images',
-        paths.appPath + 'base/lib',
-        paths.appPath + 'base/styles',
-        paths.appPath + 'base/views',
-        paths.appPath + 'modules',
-        paths.buildPath + 'public/css',
-        paths.buildPath + 'public/fonts',
-        paths.buildPath + 'public/img',
-        paths.buildPath + 'public/js',
+    fs              = require('fs'),
+    mkdirp          = require('mkdirp'),
+    async           = require('async'),
+    scriptPath      = __dirname + "/",
+    defaults        = JSON.parse(fs.readFileSync(scriptPath + '/../defaults.json', 'utf8')),
+    paths           = defaults.paths,
+    appPath         = scriptPath + paths.appPath,
+    buildPath       = scriptPath + paths.buildPath,
+    configPath      = scriptPath + "/../config.json",
+    // should move these to defaults
+    dirs            = [
+        appPath + 'base/images',
+        appPath + 'base/lib',
+        appPath + 'base/styles',
+        appPath + 'base/views',
+        appPath + 'modules',
+        buildPath + 'css',
+        buildPath + 'fonts',
+        buildPath + 'img',
+        buildPath + 'js',
     ];
 
+
 // Check if config file exists
-if (!fs.existsSync(paths.configPath)) {
+if (!fs.existsSync(configPath)) {
+    console.log(configPath);
     return console.log("ERROR: Config file not found. Please run node configure.js <profile>");
 } else {
     // Make all the directories listed in dirs.
@@ -36,8 +38,8 @@ if (!fs.existsSync(paths.configPath)) {
     // until all the parent directories are created.
     async.map(dirs, mkdirp, function (err, results) {
         // Create style.less file
-        if (!fs.existsSync(paths.appPath + 'base/styles/index.less')) {
-            fs.open(paths.appPath + 'base/styles/index.less', 'w');
+        if (!fs.existsSync(appPath + 'base/styles/index.less')) {
+            fs.open(appPath + 'base/styles/index.less', 'w');
         }
     });
 }

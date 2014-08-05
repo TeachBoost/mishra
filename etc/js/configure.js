@@ -5,10 +5,10 @@
 // Set environment based on [current path (user)]
 
 var
-    fs = require('fs'),
-    Prompt = require('prompt-improved'),
-    currentPath = process.env.PWD,
-    envPath = currentPath + '/../env/';
+    fs              = require('fs'),
+    Prompt          = require('prompt-improved'),
+    scriptPath      = __dirname,
+    envPath         = scriptPath + '/../env/';
 
 if (process.argv.length > 2){
     makeConfig(process.argv[2]);
@@ -29,7 +29,7 @@ if (process.argv.length > 2){
     }], function(err, res) {
         if (err) return console.error(err);
         console.log('Response: ' + res.answer);
-        makeConfig(res.answer);
+        makeConfig(res.answer+ ".json");
     });
 
 }
@@ -41,7 +41,7 @@ function makeConfig(fileName) {
     if (fs.existsSync(envPath)) {
         console.log("Attempting to create config from " + fileName);
         // Copy the file to config
-        fs.createReadStream(envPath).pipe(fs.createWriteStream(currentPath + '/../config'));
+        fs.createReadStream(envPath).pipe(fs.createWriteStream(scriptPath + '/../config.json'));
         console.log("Config file created from " + fileName);
     } else {
         console.log("ERROR: Environment file '" + fileName + "' not found");

@@ -1,0 +1,79 @@
+{
+    "base" : {
+        "options" : {
+            "value" : [],
+            "description" : "browserify command options"
+        },
+        "js" : {
+            "value" : [
+                {
+                    "source" : "history/history.iegte8.js",
+                    "target" : "history.js"
+                },
+                { 
+                    "source" : "mox/dist/mox.js", 
+                    "target" : "mox.js" 
+                }
+            ],
+            "description" : "js assets to copy on build, vendor source file  > target build file"
+        },
+        "css" : {
+            "value" : [
+                "bootstrap/dist/css/bootstrap.css",
+                "fontawesome/css/font-awesome.css"
+            ],
+            "description" : "css files to prepend. All are written to base.css and so have no unique target"
+        },
+        "img" : {
+            "value" : [],
+            "description" : "image directory names and the vendor path, directories are relative to the vendor path" 
+        },
+        "fonts" : {
+            "value" : [],
+            "description" : "array of fonts to copy when building base, relative to the vendor path"
+        },
+        "dependencies": [
+            { "require" : "/../../vendor/jquery/dist/jquery.min.js", "expose": "jquery" },
+            { "require" : "bootstrap", "expose": "bootstrap" },
+            { "require" : "underscore", "expose": "underscore" },
+            { "require" : "superagent", "expose": "superagent" },
+            { "require" : "pouchdb", "expose": "pouchdb" },
+            { "require" : "page", "expose": "page" },
+            { "require" : "stapes", "expose": "stapes" },
+            { "require" : "ractify", "expose": "ractify" },
+            { "require" : "ractive", "expose": "ractive" },
+            { "require" : "/../../vendor/simpleStorage/simpleStorage.js", "expose": "simpleStorage" },
+            { "require" : "/../../vendor/ui-kit/dist/js/notify.min.js", "expose": "notifyjs" },
+            { "require" : "/../../vendor/ui-kit/dist/js/icheck.min.js", "expose": "icheck" },
+            { "require" : "/../../vendor/ui-kit/dist/js/mousewheel.min.js", "expose": "mousewheel" },
+            { "require" : "/../../vendor/ui-kit/dist/js/perfectScrollbar.min.js", "expose": "perfectScrollbar" }
+        ]
+    },
+    "modules" : {
+        "value" : [
+            "home",
+            "test"
+        ],
+        "description" : "modules used in this app, and their dependencies",
+        "options" : {
+            "value" : [],
+            "description" : "browserify command options for non-base modules"
+        },
+        "dependencies": [
+            { "require" : "/../../vendor/jquery/dist/jquery.min.js", "expose": "jquery" },
+            { "require" : "bootstrap", "expose": "bootstrap" },
+            { "require" : "underscore", "expose": "underscore" },
+            { "require" : "superagent", "expose": "superagent" },
+            { "require" : "pouchdb", "expose": "pouchdb" },
+            { "require" : "page", "expose": "page" },
+            { "require" : "stapes", "expose": "stapes" },
+            { "require" : "ractify", "expose": "ractify" },
+            { "require" : "ractive", "expose": "ractive" },
+            { "require" : "/../../vendor/simpleStorage/simpleStorage.js", "expose": "simpleStorage" },
+            { "require" : "/../../vendor/ui-kit/dist/js/notify.min.js", "expose": "notifyjs" },
+            { "require" : "/../../vendor/ui-kit/dist/js/icheck.min.js", "expose": "icheck" },
+            { "require" : "/../../vendor/ui-kit/dist/js/mousewheel.min.js", "expose": "mousewheel" },
+            { "require" : "/../../vendor/ui-kit/dist/js/perfectScrollbar.min.js", "expose": "perfectScrollbar" }
+        ]
+    }
+}
