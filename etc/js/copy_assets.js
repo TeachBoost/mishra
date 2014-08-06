@@ -42,6 +42,7 @@ async.each(modules, function(module, callback) {
 });
 
 
+
 function copyAssets(readDir, writeDir, assets) {
     assets.forEach(function(asset) {
         fs.createReadStream(readDir + asset)
