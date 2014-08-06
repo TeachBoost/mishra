@@ -52,7 +52,8 @@
     "modules" : {
         "value" : [
             "home",
-            "test"
+            "test",
+            "design"
         ],
         "description" : "modules used in this app, and their dependencies",
         "options" : {

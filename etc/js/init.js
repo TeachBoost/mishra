@@ -1,9 +1,6 @@
 // init.js
 // Set up directories and the environment
 
-// Paths are relative to current directory, would be better if node
-// could pull the directory of the script itself, if the script is called
-// from a parent directory, e.g.
 var
     fs              = require('fs'),
     mkdirp          = require('mkdirp'),

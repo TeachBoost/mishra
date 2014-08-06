@@ -1,34 +1,55 @@
 {
-    "name" : "Mishra",
-    "description" : "Front-end project template",
-    "author" : "Mike Gioia <mike@teachboost.com>",
-    "dependencies" : {
-        "uglifyify" : "*"
-    },
-    "devDependencies" : {
-        "async" : "*",
-        "watchify" : "*",
-        "browserify" : "4.x.x",
-        "less" : "*",
-        "browserify-shim" : "*",
-        "gulp" : "*",
-        "path" : "*",
-        "gulp-less" : "*",
-        "gulp-rename" : "*",
-        "gulp-exec" : "*",
-        "mkdirp" : "*"
-    },
-    "browser" : {},
-    "browserify": {
-        "transform": [ 
-            "browserify-shim"
-        ]
-    },
-    "browserify-shim": {},
-    "scripts" : {
-        "build" : "./etc/bin/build.sh all",
-        "build-html" : "./etc/bin/compile_html.sh",
-        "build-base" : "./etc/bin/build.sh base",
-        "copy-assets" : "./etc/bin/copy_assets.sh"
-    }
+  "name": "Mishra",
+  "description": "Front-end project template",
+  "author": "Mike Gioia <mike@teachboost.com>",
+  "dependencies": {
+    "q": "^1.0.1",
+    "ractify": "^0.5.0",
+    "uglifyify": "*"
+  },
+  "devDependencies": {
+    "async": "*",
+    "browserify": "<5.0.0",
+    "browserify-shim": "*",
+    "jquery-browserify": "*",
+    "bootstrap-browserify": "*",
+    "underscore": "*",
+    "superagent": "*",
+    "pouchdb": "*",
+    "page": "*",
+    "stapes": "*",
+    "gulp-browserify": "*",
+    "gulp": "*",
+    "gulp-exec": "*",
+    "gulp-less": "*",
+    "gulp-rename": "*",
+    "mkdirp": "*",
+    "path": "*",
+    "prompt-improved": "*",
+    "ractify": "^0.5.0",
+    "ractive": "^0.5.5",
+    "terminal-menu": "*",
+    "watchify": "*"
+  },
+  "browser": {
+      "bootstrap": "bootstrap-browserify",
+      "ractive": "./node_modules/ractive/ractive-legacy.runtime.js",
+      "simpleStorage": "./vendor/simpleStorage/simpleStorage.js",
+      "notifyjs": "./vendor/ui-kit/dist/js/notify.min.js",
+      "icheck": "./vendor/ui-kit/dist/js/icheck.min.js",
+      "mousewheel": "./vendor/ui-kit/dist/js/mousewheel.min.js",
+      "perfectScrollbar": "./vendor/ui-kit/dist/js/perfectScrollbar.min.js"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {},
+  "scripts": {
+    "build": "./etc/bin/build.sh all",
+    "build-html": "./etc/bin/compile_html.sh",
+    "build-base": "./etc/bin/build.sh base",
+    "copy-assets": "./etc/bin/copy_assets.sh"
+  }
 }
