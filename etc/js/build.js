@@ -3,27 +3,32 @@
  * using Browserify.
  *
  * To run:
- * $> node build.js
+ * $> node etc/js/build.js
  */
+
+// required before all
 var fs = require( 'fs' )
+  , _ = require( 'underscore' )
   , Prompt = require( 'prompt-improved' )
   , less = require( 'less' )
   , async = require( 'async' )
   , mkdirp = require( 'mkdirp' )
   , childProcess = require( 'child_process' )
   , browserify = require( 'browserify' )
-  , ractify = require( 'ractify' )
-  , scriptPath = __dirname
-  , config = JSON.parse( fs.readFileSync( scriptPath + '/../config.json', 'utf8' ) )
+  , ractify = require( 'ractify' ) //@MG should not be here
+  , scriptPath = __dirname;
+
+// check if config files exist
+// @TODO
+var config = JSON.parse( fs.readFileSync( scriptPath + '/../config.json', 'utf8' ) )
   , defaults = JSON.parse( fs.readFileSync( scriptPath + '/../defaults.json', 'utf8' ) )
-  , dependencies = config.base.dependencies
-  , modules = config.modules
-  , settings = defaults.settings
-  , paths = defaults.paths
-  , basePath = scriptPath + "/" + paths.basePath
-  , modulePath = scriptPath + "/" + paths.modulePath
-  , vendorPath = scriptPath + "/" + paths.vendorPath
-  , buildPath = scriptPath + "/" + paths.buildPath
+  , settings = _.extend( defaults, config );
+
+// pull out paths
+var basePath = scriptPath + "/" + settings.paths.basePath
+  , modulePath = scriptPath + "/" + settings.paths.modulePath
+  , vendorPath = scriptPath + "/" + settings.paths.vendorPath
+  , buildPath = scriptPath + "/" + settings.paths.buildPath
   , outFile = "";
 
 // Determine which module to build. If script is run with and
@@ -93,8 +98,7 @@ var builder = function ( module ) {
 var buildBase = function () {
     // TODO: Update outfile to 'base.js' at some point
     var outFile = "xxxxx.js";
-
-    browserifyBase( paths, dependencies, outFile );
+    browserifyBase();
 
     async.series([
         copyJsFiles,
@@ -332,18 +336,21 @@ var lessCssFiles = function ( callback, module ) {
     // }
 }
 
-var browserifyBase = function ( paths, dependencies, outFile ) {
-    var bundle = browserify({
-        debug: true,
-        entries: [scriptPath + '/../../junk.js'] ,
-        transform: 'ractify'
-    });
+var browserifyBase = function ( outFile ) {
+    var outFile = "xxxx.js"
+      , bundle = browserify({
+            debug: true,
+            entries: [scriptPath + '/../../junk.js'] ,
+            transform: 'ractify' // @TODO this should be pulled from transforms
+        });
 
     // Make .ract templates play nice
-    bundle.transform( ractify );
+    bundle.transform( ractify ); // @TODO see above
 
     // Require vendor and custom libraries and make them available
     // outside the bundle.
+    // @TODO this should read from the browserify config and add the
+    //       requires, transforms and exludees
     dependencies.map( function( dependency ) {
         // check if there are vendor files
         if ( dependency.require.match( '\/vendor\/' ) ) {

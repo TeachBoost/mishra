@@ -3,23 +3,24 @@
     "description": "Front-end project template",
     "author": "Mike Gioia <mike@teachboost.com>",
     "dependencies": {
-        "uglifyify": "*"
-    },
-    "devDependencies": {
+        "uglifyify": "*",
+        "mkdirp": "*",
+        "prompt-improved": "*",
+        "browserify-shim": "*",
         "async": "*",
         "watchify": "*",
         "browserify": "4.x.x",
         "ractify": "*",
         "ractive": "*",
         "less": "*",
-        "browserify-shim": "*",
+        "underscore": "*"
+    },
+    "devDependencies": {
         "gulp": "*",
         "path": "*",
         "gulp-less": "*",
         "gulp-rename": "*",
-        "gulp-exec": "*",
-        "mkdirp": "*",
-        "prompt-improved": "*"
+        "gulp-exec": "*"
     },
     "browser": {},
     "browserify": {
