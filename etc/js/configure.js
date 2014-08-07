@@ -4,14 +4,14 @@
 
 // Set environment based on [current path (user)]
 
-var
-    fs              = require('fs'),
-    Prompt          = require('prompt-improved'),
-    scriptPath      = __dirname,
-    envPath         = scriptPath + '/../env/';
+var fs = require( 'fs' )
+  , Prompt = require( 'prompt-improved' );
 
-if (process.argv.length > 2){
-    makeConfig(process.argv[2]);
+var scriptPath = __dirname
+  , envPath = scriptPath + '/../env/';
+
+if ( process.argv.length > 2 ){
+    makeConfig( process.argv[2] );
 
 } else {
     var prompt = new Prompt({
@@ -26,26 +26,26 @@ if (process.argv.length > 2){
         required: true,
         default: 'development',
         boolean: false
-    }], function(err, res) {
-        if (err) return console.error(err);
-        console.log('Response: ' + res.answer);
-        makeConfig(res.answer+ ".json");
+    }], function( err, res ) {
+        if ( err ) { return console.error( err ); }
+        console.log( 'Response: ' + res.answer );
+        makeConfig( res.answer + ".json" );
     });
 
 }
 
-function makeConfig(fileName) {
+function makeConfig( fileName ) {
     envPath += fileName;
 
     // Check if profile exists
-    if (fs.existsSync(envPath)) {
-        console.log("Attempting to create config from " + fileName);
+    if ( fs.existsSync( envPath ) ) {
+        console.log( "Attempting to create config from " + fileName );
         // Copy the file to config
-        fs.createReadStream(envPath).pipe(fs.createWriteStream(scriptPath + '/../config.json'));
-        console.log("Config file created from " + fileName);
+        fs.createReadStream( envPath )
+            .pipe( fs.createWriteStream( scriptPath + '/../config.json' ) );
+        console.log( "Config file created from " + fileName );
     } else {
-        console.log("ERROR: Environment file '" + fileName + "' not found");
+        console.log( "ERROR: Environment file '" + fileName + "' not found" );
     }
-    
 }
 

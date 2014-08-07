@@ -1,73 +1,110 @@
 // init.js
 // Set up directories and the environment
 
-var
-    fs              = require('fs'),
-    mkdirp          = require('mkdirp'),
-    async           = require('async'),
-    scriptPath      = __dirname + "/",
-    defaults        = JSON.parse(fs.readFileSync(scriptPath + '/../defaults.json', 'utf8')),
-    config          = JSON.parse(fs.readFileSync(scriptPath + '/../config.json', 'utf8')),
-    paths           = defaults.paths,
-    appPath         = scriptPath + paths.appPath,
-    modules         = config.modules.value,
-    vendorPath      = scriptPath + "/" + paths.vendorPath,
-    buildPath       = scriptPath + "/" + paths.buildPath,
-    assets;
+'use strict';
+
+var fs = require( 'fs' )
+  , _ = require( 'underscore' )
+  , mkdirp = require( 'mkdirp' )
+  , ncp = require( 'ncp' ).ncp
+  , async = require( 'async' );
+
+var scriptPath = __dirname;
+
+var config = JSON.parse(
+        fs.readFileSync( scriptPath + '/../config.json', 'utf8' ) )
+  , defaults = JSON.parse(
+        fs.readFileSync( scriptPath + '/../defaults.json', 'utf8' ) )
+  , settings = _.extend( defaults, config );
+
+var appPath = scriptPath + '/' + settings.paths.appPath
+  , vendorPath = scriptPath + '/' + settings.paths.vendorPath
+  , buildPath = scriptPath + '/' + settings.paths.buildPath;
+
+var modules = _.keys( settings.modules );
 
 // Create buildpath if it doesn't exist
-mkdirp(buildPath+'/img');
-mkdirp(buildPath+'/fonts');
+mkdirp( buildPath + 'img' );
+mkdirp( buildPath + 'fonts' );
 
-modules = modules.map(function(module) {return 'modules/' + module});
-modules.unshift('base');
-console.log(modules);
+modules = modules.map( function ( module ) { return 'modules/' + module; } );
+modules.unshift( 'base' );
 
-async.each(modules, function(module, callback) {
-    fs.readdir(appPath + '/' + module + '/images', function(err, assets) {
-        if (err) {
-            console.log(module + ' directory not found');
-        }
-        else if (assets.length > 0) {
-            console.log('Copying ' + module + ' assets'); 
-            copyAssets(appPath + '/' + module + '/images/', buildPath + '/img/', assets);
-        } else  {
-            console.log ('no image files found in ' + module + ', skipping');
-        }   
-    });
-}, function(err) {
-    if(err) {
-        console.log('A file failed to process. ERROR: ', err);
-    }
+async.series([
+    copyBaseImages,
+    copyVendorImages,
+    copyFonts
+], function ( err, results ) {
+    if ( err ) { console.log( err ); }
+    // console.log( results.join( '\n' ) );
 });
 
+//Copy module-specific images into top level build/public/img folder
+function copyBaseImages ( callback ) {
 
+    _.each( modules, function ( module ) {
 
-function copyAssets(readDir, writeDir, assets) {
-    assets.forEach(function(asset) {
-        fs.createReadStream(readDir + asset)
-          .on('error', function(err) {throw err;})
-          .pipe(fs.createWriteStream(writeDir + asset)
-                  .on('error', function(err) {throw err;}));
-          // .on('finish', function() {})
+        copyAssets( appPath + module + '/images/',
+                    buildPath + 'img/',
+                    module);
     });
+    callback( null, 'Base images copied' );
+}
+
+// Copy vendor-specific  images into build/public/img/[vendor] folders
+function copyVendorImages ( callback ) {
+
+    _.keys( settings.base.img.value ).forEach( function ( directory ) {
+
+        if ( settings.base.img.value.hasOwnProperty( directory ) ) {
+            mkdirp( buildPath + 'img/' + directory, function ( err ) {
+                if ( err ) { console.error ( err ); }
+                else {
+                    console.log( 'Copying ' + directory + ' assets' );
+                    copyAssets( vendorPath + settings.base.img.value[directory],
+                        buildPath + 'img/' + directory + '/',
+                        directory
+                    );
+                }
+            } );
+        }
+    } );
+    callback( null, 'Vendor images copied' );
+}
+
+// Copy vendor fonts into build/public/fonts
+function copyFonts ( callback ) {
+
+    _.each( settings.base.fonts.value, function ( fontFile ) {
+        // fonts all reside at top level of /fonts
+        var outFile = fontFile.split( '/' ).pop( );
+
+        // TODO: Add check to see if file exists first?
+        fs.createReadStream( vendorPath + fontFile )
+            .pipe( fs.createWriteStream( buildPath + 'fonts/' + outFile ));
+    });
+    callback( null, 'Fonts copied' );
 }
 
 
-// Check if config file exists
-// if (!fs.existsSync(configPath)) {
-//     console.log(configPath);
-//     return console.log("ERROR: Config file not found. Please run node configure.js <profile>");
-// } else {
-//     // Make all the directories listed in dirs.
-//     // Uses async so that creating the index.less file doesn't happen
-//     // until all the parent directories are created.
-//     async.map(dirs, mkdirp, function (err, results) {
-//         // Create style.less file
-//         if (!fs.existsSync(appPath + 'base/styles/index.less')) {
-//             fs.open(appPath + 'base/styles/index.less', 'w');
-//         }
-//     });
-// }
+// Copy directories, checking if files exist first
+function copyAssets( readDir, writeDir, module ) {
+
+    fs.readdir( readDir, function ( err, assets ) {
+            if ( err ) {
+                console.log( module + ' asset directory not found' );
+            }
+            else if ( assets.length > 0 ) {
+                ncp( readDir, writeDir, function ( err ) {
+                    if ( err ) { return console.error( err ); }
+                         console.log( 'Copied ' + module + ' assets' );
+                        });
+            }
+            else  {
+                console.log( 'no image files found in ' +
+                    module + ', skipping' );
+            }
+    } );
+}
 
 
