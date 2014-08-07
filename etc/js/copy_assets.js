@@ -1,5 +1,5 @@
-// init.js
-// Set up directories and the environment
+// copy_assets.js
+// Copy images and font to build directory
 
 'use strict';
 
@@ -30,14 +30,15 @@ mkdirp( buildPath + 'fonts' );
 modules = modules.map( function ( module ) { return 'modules/' + module; } );
 modules.unshift( 'base' );
 
-async.series([
+async.series( [
     copyBaseImages,
     copyVendorImages,
     copyFonts
-], function ( err, results ) {
-    if ( err ) { console.log( err ); }
-    // console.log( results.join( '\n' ) );
-});
+    ],
+    function ( err, results ) {
+        if ( err ) { console.log( err ); }
+        // console.log( results.join( '\n' ) );
+} );
 
 //Copy module-specific images into top level build/public/img folder
 function copyBaseImages ( callback ) {
@@ -46,8 +47,8 @@ function copyBaseImages ( callback ) {
 
         copyAssets( appPath + module + '/images/',
                     buildPath + 'img/',
-                    module);
-    });
+                    module );
+    } );
     callback( null, 'Base images copied' );
 }
 
@@ -58,7 +59,7 @@ function copyVendorImages ( callback ) {
 
         if ( settings.base.img.value.hasOwnProperty( directory ) ) {
             mkdirp( buildPath + 'img/' + directory, function ( err ) {
-                if ( err ) { console.error ( err ); }
+                if ( err ) { console.error( err ); }
                 else {
                     console.log( 'Copying ' + directory + ' assets' );
                     copyAssets( vendorPath + settings.base.img.value[directory],
@@ -81,8 +82,8 @@ function copyFonts ( callback ) {
 
         // TODO: Add check to see if file exists first?
         fs.createReadStream( vendorPath + fontFile )
-            .pipe( fs.createWriteStream( buildPath + 'fonts/' + outFile ));
-    });
+            .pipe( fs.createWriteStream( buildPath + 'fonts/' + outFile ) );
+    } );
     callback( null, 'Fonts copied' );
 }
 
@@ -98,7 +99,7 @@ function copyAssets( readDir, writeDir, module ) {
                 ncp( readDir, writeDir, function ( err ) {
                     if ( err ) { return console.error( err ); }
                          console.log( 'Copied ' + module + ' assets' );
-                        });
+                        } );
             }
             else  {
                 console.log( 'no image files found in ' +
@@ -106,5 +107,3 @@ function copyAssets( readDir, writeDir, module ) {
             }
     } );
 }
-
-

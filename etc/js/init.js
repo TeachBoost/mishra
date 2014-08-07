@@ -1,6 +1,8 @@
 // init.js
 // Set up directories and the environment
 
+'use strict';
+
 var fs = require( 'fs' )
   , mkdirp = require( 'mkdirp' )
   , async = require( 'async' );
@@ -13,9 +15,8 @@ var defaults = JSON.parse( fs
 var paths = defaults.paths
   , appPath = scriptPath + paths.appPath
   , buildPath = scriptPath + paths.buildPath
-  , configPath = scriptPath + "/../config.json";
+  , configPath = scriptPath + '/../config.json';
 
-  var cow = "aldskfn";
 
 // should move these to config?
 var dirs = [
@@ -34,8 +35,7 @@ var dirs = [
 // Check if config file exists
 if ( !fs.existsSync( configPath ) ) {
     console.log( configPath );
-    console.log(
-        'ERROR: Config file not found. Please run node configure.js <profile>');
+    console.log( 'ERROR: Config file not found. Please run node configure.js <profile>' );
 } else {
     // Make all the directories listed in dirs.
     // Uses async so that creating the index.less file doesn't happen
@@ -49,7 +49,5 @@ if ( !fs.existsSync( configPath ) ) {
             console.log( 'ERROR: ' + err );
         }
 
-    });
+    } );
 }
-
-

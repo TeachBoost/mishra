@@ -54,22 +54,22 @@ if ( process.argv.length > 2 ) {
         flags.debug = true;
     }
 
-    index = process.argv.indexOf('--minify' );
+    index = process.argv.indexOf( '--minify' );
     if ( process.argv.indexOf( '--minify' ) > -1 ) {
         process.argv.splice( index, 1 );
         flags.minify = true;
     }
 
     if ( process.argv.length === 0 ||
-            ( process.argv.indexOf( 'all') > -1 &&
-                process.argv.indexOf( 'base' ) <= -1 )) {
+            ( process.argv.indexOf( 'all' ) > -1 &&
+                process.argv.indexOf( 'base' ) <= -1 ) ) {
         process.argv.unshift( 'base' );
     }
 
     console.log( 'Attempting to build modules: ' + process.argv.join( ', ' ) );
     process.argv.forEach( function ( module ) {
         builder( module, flags );
-    });
+    } );
 }
 else {
     console.log( 'Attempting to build base' );
@@ -95,7 +95,7 @@ function builder ( module, flags ) {
     if ( module === 'all' ) {
         settings.modules.forEach( function ( mod ) {
             buildModule( mod );
-        });
+        } );
     }
 }
 
@@ -109,14 +109,14 @@ function buildBase ( flags ) {
         settings.base.browserify
     );
 
-    async.series([
+    async.series( [
         copyJsFiles,
         lessCssFiles,
         copyCssFiles
     ], function ( err, results ) {
         if ( err ) { console.log( err ); }
         console.log( results.join( '\n' ) );
-    });
+    } );
 }
 
 function buildModule ( module, flags ) {
@@ -149,12 +149,12 @@ function copyJsFiles ( callback ) {
             function ( jsFile ) {
                 fs.createReadStream( vendorPath + jsFile.source )
                     .pipe( fs.createWriteStream( jsPath + jsFile.target ) );
-            });
+            } );
     }
 
     // callback(new Error( 'This is a test' ));
     callback( null,
-        'Vendor JS files copied to ' + jsPath.replace( __dirname, '')
+        'Vendor JS files copied to ' + jsPath.replace( __dirname, '' )
     );
 }
 
@@ -189,13 +189,13 @@ function lessCssFiles ( callback, module ) {
             if ( stdout ) { console.log( stdout ); }
             if ( stderr ) { console.log( stderr ); }
             if ( error !== null ) {
-                console.log( 'exec error: ' + error);
+                console.log( 'exec error: ' + error );
             }
-        });
+        } );
 
     lesscProcess.on( 'close', function ( ) {
         // console.log( 'Completed LESS and added to' + outFile );
-    });
+    } );
     if ( module === undefined ) {
         callback( null,
             'LESS CSS compiled into ' + outFile.replace( __dirname, '' )
@@ -222,18 +222,18 @@ function browserifyModules ( module, entries, outFile, rules ) {
             transformLib = require( transform );
             // bundle.transform it
             bundle.transform( transformLib );
-        });
+        } );
     }
 
     // Excludes from browserify configs
     rules.excludes.forEach( function ( exclusion ) {
         bundle.exclude( exclusion );
-    });
+    } );
 
     // Require vendor libraries from browserify configs
     rules.requires.forEach( function ( dependency ) {
         bundle.require( dependency );
-    });
+    } );
 
     // Actually make bundle
     bundle
@@ -242,7 +242,7 @@ function browserifyModules ( module, entries, outFile, rules ) {
             console.log( module + ' bundle created at' +
                 outFile.replace( __dirname, '' ) + '\n' );
             return data;
-        })
+        } )
         .pipe( fs.createWriteStream( outFile ) );
 }
 
@@ -252,7 +252,7 @@ function concat ( options ) {
       , fileEncoding = 'utf-8'
       , out = fileList.map( function ( filePath ) {
             return fs.readFileSync( vendorPath + filePath, fileEncoding );
-        });
+        } );
 
     // console.log( fileList );
     fs.writeFileSync( outPath, out.join( '\n' ), fileEncoding );
