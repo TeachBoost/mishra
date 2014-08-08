@@ -15,6 +15,15 @@
     <div id="page"></div>
 
     <!-- Javascripts -->
+    <script type="text/javascript">
+        window.Environment = {
+            pathStem: '{{& historyBasePath }}',
+            basePath: '{{& basePath }}',
+            assetPath: '{{& assetPath }}',
+            apiPath: '{{& apiPath }}',
+            appPath: '{{& appPath }}'
+        };
+    </script>
     <script src="{{& assetPath }}/{{& versionPath }}/js/base.js" type="text/javascript"></script>
     <script src="{{& assetPath }}/{{& versionPath }}/js/{{& module }}.js" type="text/javascript"></script>
 </body>
