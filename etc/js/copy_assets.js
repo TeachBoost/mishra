@@ -1,6 +1,10 @@
-// copy_assets.js
-// Copy images and font to build directory
-
+/*
+ *  copy_assets.js
+ *  Copies images and font to build directory
+ *
+ *  To run:
+ *  $> node etc/js/copy_assets.js
+ */
 'use strict';
 
 var fs = require( 'fs' )
@@ -17,9 +21,9 @@ var config = JSON.parse(
         fs.readFileSync( scriptPath + '/../defaults.json', 'utf8' ) )
   , settings = _.extend( defaults, config );
 
-var appPath = scriptPath + '/' + settings.paths.appPath
-  , vendorPath = scriptPath + '/' + settings.paths.vendorPath
-  , buildPath = scriptPath + '/' + settings.paths.buildPath;
+var appPath = scriptPath + '/' + settings.devPaths.appPath
+  , vendorPath = scriptPath + '/' + settings.devPaths.vendorPath
+  , buildPath = scriptPath + '/' + settings.devPaths.buildPath;
 
 var modules = _.keys( settings.modules );
 

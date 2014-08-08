@@ -1,6 +1,10 @@
-// init.js
-// Set up directories and the environment
-
+/*
+ *  init.js
+ *  Set up directories and the environment
+ *
+ *  To run:
+ *  $> node etc/js/copy_assets.js
+ */
 'use strict';
 
 var fs = require( 'fs' )
@@ -12,9 +16,8 @@ var scriptPath = __dirname + '/';
 var defaults = JSON.parse( fs
         .readFileSync( scriptPath + '/../defaults.json', 'utf8' ) );
 
-var paths = defaults.paths
-  , appPath = scriptPath + paths.appPath
-  , buildPath = scriptPath + paths.buildPath
+var appPath = scriptPath + defaults.devPaths.appPath
+  , buildPath = scriptPath + defaults.devPaths.buildPath
   , configPath = scriptPath + '/../config.json';
 
 

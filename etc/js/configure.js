@@ -1,6 +1,10 @@
-// configure.js
-// Copies environment file to config file
-// node configure.js <profile>
+/*
+ *  configure.js
+ *  Copies environment file to config file (must be JSON)
+ *
+ *  To run:
+ *  $> node etc/js/configure.js <profile>
+ */
 
 'use strict';
 
@@ -16,7 +20,7 @@ if ( process.argv.length > 2 ){
     makeConfig( process.argv[2] );
 
 } else {
-    var prompt = new Prompt( {
+    var prompt = new Prompt({
         prefix: '[?] ',
         prefixTheme : Prompt.chalk.green,
         textTheme   : Prompt.chalk.bold.green

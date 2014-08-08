@@ -1,9 +1,10 @@
-/**
- * Packages node modules, other vendor js, and custom js
- * using Browserify.
+/*
+ *  build.js
+ *  Packages node modules, other vendor js, and custom js
+ *  using Browserify.
  *
- * To run:
- * $> node etc/js/build.js
+ *  To run:
+ *  $> node etc/js/build.js [--debug] [--minify] [module|all]
  */
 
 
@@ -20,7 +21,6 @@ var fs = require( 'fs' )
 var scriptPath = __dirname;
 
 // check if config files exist
-// @TODO
 var config = JSON.parse(
         fs.readFileSync( scriptPath + '/../config.json', 'utf8' ) )
   , defaults = JSON.parse(
@@ -28,10 +28,10 @@ var config = JSON.parse(
   , settings = _.extend( defaults, config );
 
 // pull out paths
-var basePath = scriptPath + '/' + settings.paths.basePath
-  , modulePath = scriptPath + '/' + settings.paths.modulePath
-  , vendorPath = scriptPath + '/' + settings.paths.vendorPath
-  , buildPath = scriptPath + '/' + settings.paths.buildPath;
+var basePath = scriptPath + '/' + settings.devPaths.basePath
+  , modulePath = scriptPath + '/' + settings.devPaths.modulePath
+  , vendorPath = scriptPath + '/' + settings.devPaths.vendorPath
+  , buildPath = scriptPath + '/' + settings.devPaths.buildPath;
 
 
 var flags = { 'debug' : false, 'minify' : false };
@@ -39,7 +39,7 @@ var flags = { 'debug' : false, 'minify' : false };
 // Determine which module to build. If script is run with and
 // argument, use that. Possible flags are minify or debug.
 //
-// TODO: minify and debug flags aren't being passed to browserify yet.
+// TODO: Check if debug flag is properly being passed to browserify.
 
 console.log( '\n======================================================' );
 
@@ -68,38 +68,42 @@ if ( process.argv.length > 2 ) {
 
     console.log( 'Attempting to build modules: ' + process.argv.join( ', ' ) );
     process.argv.forEach( function ( module ) {
-        builder( module, flags );
+        builder( module );
     } );
 }
 else {
     console.log( 'Attempting to build base' );
-    builder( 'base', flags );
+    builder( 'base' );
 
 }
 
 
-function builder ( module, flags ) {
+function builder ( module ) {
     console.log( flags );
 
     // create asset folders
     mkdirp( buildPath + '/js' );
     mkdirp( buildPath + '/css' );
 
-    if ( module === 'base' || module === 'all' ) {
-        buildBase( flags );
+    if ( module === 'base' ) {
+        buildBase( );
+    }
+    else if ( module === 'all' ) {
+        _.each( settings.modules, function ( value, key ) {
+            buildModule( key );
+        });
     }
     else {
-        buildModule( module, flags );
+        buildModule( module );
     }
 
-    if ( module === 'all' ) {
-        settings.modules.forEach( function ( mod ) {
-            buildModule( mod );
-        } );
-    }
+
+        // settings.modules.forEach( function ( mod ) {
+        //     buildModule( mod );
+        // } );
 }
 
-function buildBase ( flags ) {
+function buildBase ( ) {
 
     //  browserifyModules(module, entries, outFile, settings)
     browserifyModules(
@@ -119,7 +123,7 @@ function buildBase ( flags ) {
     } );
 }
 
-function buildModule ( module, flags ) {
+function buildModule ( module ) {
 
     // check that module path exists
     if ( fs.existsSync( modulePath + module + '/index.js' ) ) {
@@ -186,8 +190,8 @@ function lessCssFiles ( callback, module ) {
     var lesscProcess = childProcess.exec(
         command,
         function ( error, stdout, stderr ) {
-            if ( stdout ) { console.log( stdout ); }
-            if ( stderr ) { console.log( stderr ); }
+            if ( stdout ) { console.log( 'stdout: ' + stdout ); }
+            if ( stderr ) { console.log( 'stderr' + stderr ); }
             if ( error !== null ) {
                 console.log( 'exec error: ' + error );
             }
@@ -210,7 +214,7 @@ function lessCssFiles ( callback, module ) {
 
 function browserifyModules ( module, entries, outFile, rules ) {
     var bundle = browserify( {
-            debug: true
+            debug: flags.debug
           , entries: entries
         } );
 
@@ -224,6 +228,11 @@ function browserifyModules ( module, entries, outFile, rules ) {
             bundle.transform( transformLib );
         } );
     }
+
+    if ( flags.minify ) {
+        bundle.transform( 'uglifyify' );
+    }
+
 
     // Excludes from browserify configs
     rules.excludes.forEach( function ( exclusion ) {

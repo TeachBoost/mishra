@@ -1,11 +1,11 @@
-{ 
-    "paths": {
+{
+    "devPaths": {
         "rootPath": "../../" ,
         "appPath": "../../app/" ,
         "basePath": "../../app/base/" ,
         "modulePath": "../../app/modules/" ,
         "buildPath": "../../build/public/" ,
-        "vendorPath": "../../vendor/" 
+        "vendorPath": "../../vendor/"
     },
     "settings": {
         "historyBasePath": {
