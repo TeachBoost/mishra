@@ -1,0 +1,50 @@
+{
+    "devPaths": {
+        "rootPath": "../../" ,
+        "appPath": "../../app/" ,
+        "basePath": "../../app/base/" ,
+        "modulePath": "../../app/modules/" ,
+        "buildPath": "../../build/public/" ,
+        "vendorPath": "../../vendor/"
+    },
+    "settings": {
+        "historyBasePath": {
+            "value": "/project",
+            "description": "stem used for history polyfill"
+        },
+        "apiPath": {
+            "value": "http://api.mishra.local",
+            "description": "path for api calls"
+        },
+        "appPath": {
+            "value": "http://mishra.local",
+            "description": "path for app redirection"
+        },
+        "basePath": {
+            "value": "http://mishra.local/project",
+            "description": "base path"
+        },
+        "assetPath": {
+            "value": "http://mishra.local/project",
+            "description": "path for assets"
+        },
+        "useHtaccess": {
+            "value": "no",
+            "description": "using htaccess?"
+        },
+        "useAssetVersion": {
+            "value": "no",
+            "description": "using asset versioning?"
+        }
+    },
+    "base": {
+        "js": {},
+        "css": {},
+        "img": {},
+        "fonts": {},
+        "browserify" : {}
+    },
+    "modules": {
+
+    }
+}

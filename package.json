@@ -1,32 +1,38 @@
 {
-    "name" : "Mishra",
-    "description" : "Front-end project template",
-    "author" : "Mike Gioia <mike@teachboost.com>",
-    "dependencies" : {
-        "uglifyify" : "*"
+    "name": "Mishra",
+    "description": "Front-end project template",
+    "author": "Mike Gioia <mike@teachboost.com>",
+    "dependencies": {
+        "uglifyify": "*",
+        "mkdirp": "*",
+        "prompt-improved": "*",
+        "browserify-shim": "*",
+        "async": "*",
+        "watchify": "*",
+        "browserify": "4.x.x",
+        "ractify": "*",
+        "ractive": "*",
+        "less": "*",
+        "underscore": "*"
     },
-    "devDependencies" : {
-        "watchify" : "*",
-        "browserify" : "*",
-        "less" : "*",
-        "browserify-shim" : "*",
-        "gulp" : "*",
-        "path" : "*",
-        "gulp-less" : "*",
-        "gulp-rename" : "*",
-        "gulp-exec" : "*"
+    "devDependencies": {
+        "gulp": "*",
+        "path": "*",
+        "gulp-less": "*",
+        "gulp-rename": "*",
+        "gulp-exec": "*"
     },
-    "browser" : {},
+    "browser": {},
     "browserify": {
         "transform": [ 
             "browserify-shim"
         ]
     },
     "browserify-shim": {},
-    "scripts" : {
-        "build" : "./etc/bin/build.sh all",
-        "build-html" : "./etc/bin/compile_html.sh",
-        "build-base" : "./etc/bin/build.sh base",
-        "copy-assets" : "./etc/bin/copy_assets.sh"
+    "scripts": {
+        "build": "./etc/bin/build.sh all",
+        "build-html": "./etc/bin/compile_html.sh",
+        "build-base": "./etc/bin/build.sh base",
+        "copy-assets": "./etc/bin/copy_assets.sh"
     }
 }
