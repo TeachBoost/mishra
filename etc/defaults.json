@@ -8,10 +8,6 @@
         "vendorPath": "../../vendor/"
     },
     "settings": {
-        "historyBasePath": {
-            "value": "/project",
-            "description": "stem used for history polyfill"
-        },
         "apiPath": {
             "value": "http://api.mishra.local",
             "description": "path for api calls"
@@ -44,7 +40,5 @@
         "fonts": {},
         "browserify" : {}
     },
-    "modules": {
-
-    }
+    "modules": {}
 }

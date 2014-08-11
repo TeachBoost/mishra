@@ -1,57 +1,69 @@
-/*
- *  configure.js
- *  Copies environment file to config file (must be JSON)
+/**
+ * configure.js
+ * Copies environment file to config file (must be JSON)
  *
- *  To run:
- *  $> node etc/js/configure.js <profile>
+ * To run:
+ * $> node etc/js/configure.js <profile>
  */
-
 'use strict';
 
-// Set environment based on [current path (user)]
-
 var fs = require( 'fs' )
-  , Prompt = require( 'prompt-improved' );
-
+  , prompt = require( 'prompt' )
+  , colors = require( 'colors' )
 var scriptPath = __dirname
   , envPath = scriptPath + '/../env/';
 
-if ( process.argv.length > 2 ){
-    makeConfig( process.argv[2] );
+// configure the prompt
+prompt.message = '';
+prompt.delimiter = '';
 
-} else {
-    var prompt = new Prompt({
-        prefix: '[?] ',
-        prefixTheme : Prompt.chalk.green,
-        textTheme   : Prompt.chalk.bold.green
-    } );
+if ( process.argv.length > 2 ) {
+    makeConfig( process.argv[ 2 ] );
+}
+else {
+    // define prompt questions
+    var schema = {
+        properties: {
+            environment: {
+                description: "[?] What is the name of your environment?".green,
+                pattern: /^[a-zA-Z\s\-]+$/,
+                message: 'Environment must be only letters, spaces, or dashes',
+                required: true,
+                default: 'development'
+            }
+        }
+    };
 
-    prompt.ask( [ {
-        question: 'What is the name of your config file?\n',
-        key: 'answer',
-        required: true,
-        default: 'development',
-        boolean: false
-    } ],
-        function( err, res ) {
-        if ( err ) { return console.error( err ); }
-        console.log( 'Response: ' + res.answer );
-        makeConfig( res.answer + '.json' );
-    } );
-
+    // start the prompt
+    prompt.start();
+    prompt.get( schema, function ( err, result ) {
+        if ( err ) {
+            return console.error( err );
+        }
+        makeConfig( result.environment );
+    });
 }
 
-function makeConfig( fileName ) {
-    envPath += fileName;
+/**
+ * Creates the configuration file for the environment
+ */
+function makeConfig( environment ) {
+    var configFile = envPath + environment + '.json';
 
     // Check if profile exists
-    if ( fs.existsSync( envPath ) ) {
-        console.log( 'Attempting to create config from ' + fileName );
+    if ( fs.existsSync( configFile ) ) {
+        console.log( 'Attempting to create config at ' + configFile );
         // Copy the file to config
-        fs.createReadStream( envPath )
-            .pipe( fs.createWriteStream( scriptPath + '/../config.json' ) );
-        console.log( 'Config file created from ' + fileName );
-    } else {
-        console.log( 'ERROR: Environment file ' + fileName + ' not found' );
+        fs.createReadStream( configFile )
+            .pipe(
+                fs.createWriteStream(
+                    scriptPath + '/../config.json'
+                ));
+        console.log( 'Success!'.bold.green );
+        return true;
+    }
+    else {
+        console.log( ('ERROR: Environment file ' + configFile + ' not found!').blackBG.red.bold );
+        return false;
     }
 }

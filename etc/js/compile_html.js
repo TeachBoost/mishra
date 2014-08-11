@@ -1,85 +1,81 @@
-/*
- *  compile_html.js
- *  Compiles the app/base/template.html to the respective
- *  build/<module>/index.html file.
+/**
+ * compile_html.js
+ * Compiles the app/base/template.html to the respective
+ * build/<module>/index.html file.
  *
- *  To run:
- *  $> node etc/js/compile_html.js
+ * To run:
+ * $> node etc/js/compile_html.js
  */
 'use strict';
 
 var fs = require( 'fs' )
   , mkdirp = require( 'mkdirp' )
   , _ = require( 'underscore' )
-  , mustache = require( 'mustache' );
+  , mustache = require( 'mustache' )
+  , colors = require( 'colors' );
 
-var scriptPath = __dirname;
-
-var config = JSON.parse(
-        fs.readFileSync( scriptPath + '/../config.json', 'utf8' ) )
+// set up paths and config
+var scriptPath = __dirname
+  , config = JSON.parse(
+        fs.readFileSync(
+            scriptPath + '/../config.json',
+            'utf8'
+        ))
   , defaults = JSON.parse(
-        fs.readFileSync( scriptPath + '/../defaults.json', 'utf8' ) )
-  , settings = _.extend( defaults, config );
-
-var templatePath = scriptPath + '/../template.mustache'
+        fs.readFileSync(
+            scriptPath + '/../defaults.json',
+            'utf8'
+        ))
+  , settings = _.extend( defaults, config )
+  , templatePath = scriptPath + '/../template.mustache'
   , modulePath = scriptPath + '/' + settings.devPaths.modulePath
   , buildPath = scriptPath + '/' +
-        settings.devPaths.buildPath.replace( '/public', '' );
-
-// NOTE: buildPath is the correct destination for these files?
-
-var modules = _.keys( settings.modules );
-var data = {
-    'versionPath' : 'build'
-};
+        settings.devPaths.buildPath.replace( '/public', '' )
+  , modules = _.keys( settings.modules )
+  , data = [];
 
 // Clean up the settings JSON a bit
 _.each( settings.settings, function ( value, key ) {
-    data[key] = value.value;
+    data[ key ] = value.value;
 });
 
-renderModule();
-
-function renderModule () {
-    console.log( '\n\n=====================================================' );
+var compileHTML = function () {
     var template = '';
-
+    // iterate through modules
     _.each( modules, function ( module ) {
-
         data.module = module;
 
-        // Create the directory where the rendered  HTML will live,
+        // Create the directory where the rendered HTML will live,
         // if the directory doesn't already exist
-
         mkdirp( buildPath + module );
 
-        // Set up asset version path if enabled
+        // Set up asset version path
         if ( settings.settings.useAssetVersion.value === 'yes' ) {
-            var assetVersionFile = fs.readFileSync( scriptPath +
-                '/../../asset_version', 'utf8' );
-
-            data.versionPath += '/' + assetVersionFile;
+            var assetVersion = fs.readFileSync(
+                scriptPath + '/../../asset_version',
+                'utf8' );
+            data.versionPath = assetVersion;
+        }
+        else {
+            data.versionPath = 'public';
         }
 
         // Check if there's a module template
-        if ( fs.existsSync( modulePath + module + '/index.shtml' ) ) {
+        if ( fs.existsSync( modulePath + module + '/index.mustache' ) ) {
             // Render the template at that path
-            template = fs.readFileSync( modulePath + module +
-                '/index.mustache', 'utf-8' );
-
+            template = fs.readFileSync(
+                modulePath + module + '/index.mustache', 'utf-8' );
             console.log( 'Rendering ' + module + ' template' );
         }
         else {
             // Render the default base template
             template = fs.readFileSync( templatePath, 'utf-8' );
-            console.log( 'Rendering default template: ' +
-                module + ' module has no unique template)' );
+            console.log( 'Rendering default template for ' + module );
         }
 
         template = mustache.render( template, data );
         fs.writeFileSync( buildPath + module + '/index.html', template );
-
     });
-    console.log( '=====================================================\n\n' );
 
-}
+    console.log( 'Success!'.bold.green )
+}();

@@ -4,14 +4,6 @@ Mishra is a front-end project template for building applications
 with Browserify and Node modules. It is an opinionated structure
 that allows great flexibility and easy compilation. 
 
-## Dependencies
-
-The following node modules are required globally:
-
-```bash
-npm install -g bower browserify watchify less gulp path gulp-less
-```
-
 ## Installation
 
 Get the node and bower packages:
@@ -21,41 +13,38 @@ npm install
 bower install
 ```
 
-Run the init scripts to set up your environment:
+Next, set up an environment profile in the `etc/env/` directory.
+There's a sample file in there to get you started. Run the init
+scripts to set up your environment. The syntax for
+this command, using the 'local' environment is:
 
 ```bash
-# ./etc/bin/configure.sh <environment>
-./etc/bin/configure.sh local
-./etc/bin/init.sh
+node etc/js/configure.js local
+node etc/js/init.js
 ```
 
-Finally, routing is handled through server rewrites and those
-need to be copied to your nginx/apache config. Both nginx and
-Apache are supported. The configuration is specified in
-`etc/nginx.conf` or `etc/htaccess` respectively, and the `root`
-should point to the `build/` directory of this application. If
-you're using Apache, put the `.htaccess` file in `build/`.
+Routing is handled through server rewrites and those need to be
+copied to your nginx/apache config. Both nginx and Apache have
+examples here. The configuration is specified in `etc/nginx.conf`
+or `etc/htaccess` respectively, and the `root` should point to
+the `build/` directory of this application. If you're using Apache,
+put the `.htaccess` file in `build/`.
 
 ## Building
 
-To build the javascript/stylesheets for a specific module:
+To build your modules, the syntax is:
 
 ```bash
-# ./etc/bin/build.sh <module>
-./etc/bin/build.sh home
+node etc/js/build.js [options] [module|base|all]
 ```
 
-To build the base bundles:
+You can run `build.js` with the -h or --help option to see info
+about the script. The build script will:
 
-```bash
-./etc/bin/build.sh base
-```
-
-To compile the CSS/JS for all modules
-
-```bash
-./etc/bin/build.sh all
-```
+1. Copy all vendor javascript files to the build path
+2. Copy all vendor stylesheets to the build path
+3. Run browserify for the specified modules, creating a module
+   bundle in the build path
 
 ## CSS Compilation
 
@@ -66,14 +55,12 @@ that directory.
 
 ## Watching
 
-`watchify` is used as the manager. Watching is done on a per
-module basis and it's invoked the same way as building. This
-will watch for JS changes in the specified module:
-
-```bash
-# ./etc/bin/watch.sh <module>
-./etc/bin/watch.sh home
-```
-
 Currently, CSS watching isn't set up. The plan is to set up
 a gulpfile for css watching that you would run separately.
+
+## Working Demo
+
+To see an application using Mishra in action, check out
+[https://github.com/TeachBoost/mox](Mox). This application uses
+Mishra to build a bundle of all common JavaScript, CSS, image,
+and font assets for other applications to use.
