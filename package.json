@@ -1,5 +1,6 @@
 {
     "name": "Mishra",
+    "version": "1.0.0",
     "description": "Front-end project template",
     "author": "Mike Gioia <mike@teachboost.com>",
     "dependencies": {},
@@ -30,10 +31,5 @@
         ]
     },
     "browserify-shim": {},
-    "scripts": {
-        "build": "./etc/bin/build.sh all",
-        "build-html": "./etc/bin/compile_html.sh",
-        "build-base": "./etc/bin/build.sh base",
-        "copy-assets": "./etc/bin/copy_assets.sh"
-    }
+    "scripts": {}
 }
